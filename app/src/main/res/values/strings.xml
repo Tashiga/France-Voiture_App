@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">France-voiture_App</string>
+    <string name="app_name">France Voiture</string>
+    <string name="search_name">Rechercher</string>
 </resources>
