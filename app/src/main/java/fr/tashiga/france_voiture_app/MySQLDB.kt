@@ -117,61 +117,61 @@ object MySQLDB {
 //        }
     }
 
-//    //execute n'importe quel requete et renvoie les resultats
-//    fun executeQuery(query: String):ResultSet? {
-//        var stmt: Statement? = null
-//        var resultset: ResultSet? = null
-//        try {
-//            stmt = this.conn!!.createStatement()
-//            resultset = stmt!!.executeQuery(query)
-//            if (stmt.execute(query)) {
-//                resultset = stmt.resultSet
-//            }
-//        } catch (ex: SQLException) {
-//            println("erreur lors de l'exuction de la requete SQL")
-//        }
-//        return resultset
-//    }
-//
-//    fun getConn(): Connection? {
-//        try {
-//            return this.conn!!
-//        }catch (e: Exception) {
-//            e.printStackTrace()
-//            return null
-//        }
-//    }
+    //execute n'importe quel requete et renvoie les resultats
+    fun executeQuery(query: String):ResultSet? {
+        var stmt: Statement? = null
+        var resultset: ResultSet? = null
+        try {
+            stmt = this.conn!!.createStatement()
+            resultset = stmt!!.executeQuery(query)
+            if (stmt.execute(query)) {
+                resultset = stmt.resultSet
+            }
+        } catch (ex: SQLException) {
+            println("erreur lors de l'exuction de la requete SQL")
+        }
+        return resultset
+    }
+
+    fun getConn(): Connection? {
+        try {
+            return this.conn!!
+        }catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
+    }
 
 //    Exemple d'un main fonctionnel
 
-//    @JvmStatic fun main(args: Array<String>){
-//
-////  Base de donnee : insertion d'articles
-////  categorie enum('pneus','moteur','freinage','systeme electrique', 'amortisseur','echappement', 'suspension', 'piece allumage', 'climatisation', 'carrosserie', 'alternateur', 'filtre', 'direction') not null
-////  INSERT INTO article (nom, prix, description, nbStock, dateCreation, categorie) VALUES('Un pneu', '56.23', null, 2, (select CURRENT_DATE ()), 'pneus');
-//
-//        val mysql:MySQLDB = MySQLDB()
-////      executer une requete
-//        mysql.executeQuery()
-//        var resultats: ResultSet? = mysql.executeQuery("select * from vendeur;")
-//        println("--- NOTRE RESULTAT DE EXECUTEQUERY() ---")
-//        var lign: Int = 1
-//        while(resultats!!.next()) {
-//            println( "" + lign + ". " + resultats.getString("civilite") + ". " + resultats.getString("nom").toUpperCase() + " " + resultats.getString("prenom"))
-//            println("\tMdp : " + resultats.getString("mdp") + "\n\tRaison social : " + resultats.getString("raison_social") + "\n\temail : " + resultats.getString("email") )
-//            lign++
-//        }
-//        println("-------------------------\n")
-//        resultats.close()
-//        resultats = mysql.executeQuery("select * from article")
-//        println("--- LES ARTICLES ---")
-//        lign = 1
-//        while(resultats!!.next()) {
-//            println( "" + lign + ". " + resultats.getString("nom").toUpperCase() + "[" +resultats.getString("categorie") + "] " + resultats.getString("prix") + " euros, ajouté le " + resultats.getString("dateCreation"))
-//            println("\tDescription : " + resultats.getString("description") + "\n\tStock : " + resultats.getString("nbStock") )
-//            lign++
-//        }
-//        resultats.close()
-//    }
+    @JvmStatic fun main(args: Array<String>){
+
+//  Base de donnee : insertion d'articles
+//  categorie enum('pneus','moteur','freinage','systeme electrique', 'amortisseur','echappement', 'suspension', 'piece allumage', 'climatisation', 'carrosserie', 'alternateur', 'filtre', 'direction') not null
+//  INSERT INTO article (nom, prix, description, nbStock, dateCreation, categorie) VALUES('Un pneu', '56.23', null, 2, (select CURRENT_DATE ()), 'pneus');
+
+        val mysql:MySQLDB = MySQLDB()
+//      executer une requete
+        mysql.executeQuery()
+        var resultats: ResultSet? = mysql.executeQuery("select * from vendeur;")
+        println("--- NOTRE RESULTAT DE EXECUTEQUERY() ---")
+        var lign: Int = 1
+        while(resultats!!.next()) {
+            println( "" + lign + ". " + resultats.getString("civilite") + ". " + resultats.getString("nom").toUpperCase() + " " + resultats.getString("prenom"))
+            println("\tMdp : " + resultats.getString("mdp") + "\n\tRaison social : " + resultats.getString("raison_social") + "\n\temail : " + resultats.getString("email") )
+            lign++
+        }
+        println("-------------------------\n")
+        resultats.close()
+        resultats = mysql.executeQuery("select * from article")
+        println("--- LES ARTICLES ---")
+        lign = 1
+        while(resultats!!.next()) {
+            println( "" + lign + ". " + resultats.getString("nom").toUpperCase() + "[" +resultats.getString("categorie") + "] " + resultats.getString("prix") + " euros, ajouté le " + resultats.getString("dateCreation"))
+            println("\tDescription : " + resultats.getString("description") + "\n\tStock : " + resultats.getString("nbStock") )
+            lign++
+        }
+        resultats.close()
+    }
 
 }
