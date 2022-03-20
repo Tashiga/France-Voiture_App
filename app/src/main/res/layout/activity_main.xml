@@ -6,38 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/text_view_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="116dp"
-        android:text="Test Text"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/button_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TEST CONNEXON"
+        android:backgroundTint="@color/red"
+        android:text="Afficher les articles"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.023" />
+
+    <ScrollView
+        android:layout_width="388dp"
+        android:layout_height="550dp"
+        app:layout_constraintBottom_toTopOf="@+id/error_text_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_id">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_view_id"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:text="Resultats"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
 
     <TextView
         android:id="@+id/error_text_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="65dp"
-        android:layout_marginBottom="166dp"
-        android:text="No error"
+        android:layout_width="394dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="4dp"
+        android:text="Pas d'erreur"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
