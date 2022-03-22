@@ -11,11 +11,17 @@ import java.sql.*
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        loadAccueil()
+        loadHomePage()
+    }
+
+    fun loadHomePage() {
+        setContentView(R.layout.home_page)
+        var franceVoiture = findViewById<TextView>(R.id.textView_franceVoiture) as TextView
+        franceVoiture.setOnClickListener { loadAccueil() }
     }
 
     fun loadAccueil() {
+        setContentView(R.layout.activity_main)
         var text = findViewById<TextView>(R.id.text_view_id) as TextView
         var boutonArticle = findViewById<Button>(R.id.btn_article) as Button
         var boutonPageConnexion = findViewById<Button>(R.id.connexion) as Button
