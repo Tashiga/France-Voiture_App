@@ -26,6 +26,7 @@ object MySQL {
             StrictMode.setThreadPolicy(policy)
             cn = DriverManager.getConnection("jdbc:mysql://192.168.1.42/francevoiture",
                 this.user, this.pass)
+            //en partage de connexion : 172.20.10.8
             return cn
         } catch (e: ClassNotFoundException) {
             e.printStackTrace()

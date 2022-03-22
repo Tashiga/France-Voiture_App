@@ -12,8 +12,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        loadAccueil()
+    }
+
+    fun loadAccueil() {
         var text = findViewById<TextView>(R.id.text_view_id) as TextView
-        var boutonArticle = findViewById<Button>(R.id.button_id) as Button
+        var boutonArticle = findViewById<Button>(R.id.btn_article) as Button
+        var boutonPageConnexion = findViewById<Button>(R.id.connexion) as Button
         var erreur = findViewById<TextView>(R.id.error_text_id) as TextView
         boutonArticle.setOnClickListener {
             try {
@@ -36,6 +41,18 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
                 erreur.text = e.message
             }
+        }
+        boutonPageConnexion.setOnClickListener {
+            loadConnexion()
+        }
+    }
+
+    fun loadConnexion() {
+        setContentView(R.layout.connexion)
+        var retour = findViewById<TextView>(R.id.textView_retour) as TextView
+        retour.setOnClickListener {
+            setContentView(R.layout.activity_main)
+            loadAccueil()
         }
     }
 
