@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/red">
+    android:background="@color/bleu">
 
 
     <LinearLayout
@@ -91,7 +91,7 @@
             android:layout_marginLeft="50dp"
             android:layout_marginTop="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/bleu"
+            android:backgroundTint="@color/red"
             android:text="CONNECTER"
             android:textSize="22dp"
             android:textStyle="bold" />
@@ -117,7 +117,7 @@
         android:layout_marginStart="44dp"
         android:layout_marginTop="60dp"
         android:text="RETOUR"
-        android:textColor="@color/bleu"
+        android:textColor="@color/red"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
