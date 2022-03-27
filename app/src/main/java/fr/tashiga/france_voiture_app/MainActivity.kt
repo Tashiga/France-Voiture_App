@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.sql.*
 import java.util.ArrayList
+import androidx.appcompat.widget.Toolbar
+
 
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadBoutique()
+        loadAccueil()
     }
 
     fun loadAccueil() {
@@ -23,92 +25,34 @@ class MainActivity : AppCompatActivity() {
         var citroen = findViewById<ImageView>(R.id.imageCitroen) as ImageView
         var peugeot = findViewById<ImageView>(R.id.imagePeugeot) as ImageView
         var renault = findViewById<ImageView>(R.id.imageRenault) as ImageView
-        var erreur = findViewById<TextView>(R.id.error_text_id) as TextView
+
         boutonArticle.setOnClickListener {
-            loadArticle("")
+            loadBoutique("")
+        }
+        citroen.setOnClickListener {
+            loadBoutique("Citroen")
+        }
+        peugeot.setOnClickListener {
+            loadBoutique("Peugeot")
+        }
+        renault.setOnClickListener {
+            loadBoutique("Renault")
         }
         boutonPageConnexion.setOnClickListener {
             loadConnexion()
         }
-        citroen.setOnClickListener {
-            loadArticle("citroen")
-        }
-        peugeot.setOnClickListener {
-            loadArticle("peugeot")
-        }
-        renault.setOnClickListener {
-            loadArticle("renault")
-        }
+
     }
+
 
     fun loadConnexion() {
         setContentView(R.layout.connexion)
         var retour = findViewById<TextView>(R.id.textView_retour) as TextView
         retour.setOnClickListener {
-            setContentView(R.layout.activity_main)
             loadAccueil()
         }
     }
 
-    fun loadArticle(marque:String){
-        setContentView(R.layout.display_articles)
-        var searchView = findViewById<SearchView>(R.id.idSearchBar) as SearchView
-        var listeView = findViewById<ListView>(R.id.list_item) as ListView
-        var retour = findViewById<TextView>(R.id.displayArticle_retour) as TextView
-        try {
-            MySQL.MySQL("user", "mdp")
-            var connection:Connection? = MySQL.connectMySQL()
-            val resultSet:ResultSet?
-            if(marque.equals("citroen")) {
-               resultSet = MySQL.executeRequete(connection!!, "select * from article natural join peut_convenir_avec natural join voiture where voiture.marque="+ marque)
-            }
-            else if(marque.equals("renault")) {
-                resultSet = MySQL.executeRequete(connection!!, "select * from article natural join peut_convenir_avec natural join voiture where voiture.marque="+ marque)
-            }
-            else if(marque.equals("peugeot")) {
-                resultSet = MySQL.executeRequete(connection!!, "select * from article natural join peut_convenir_avec natural join voiture where voiture.marque="+ marque)
-            }
-            else {
-                resultSet = MySQL.executeRequete(connection!!, "select * from article")
-            }
-
-            val addText: ArrayList<String> = ArrayList()
-            while (resultSet!!.next()) {
-                addText!!.add(resultSet.getString("nom") + " "+ resultSet.getString("categorie") + " "+ resultSet.getString("prix") + " euros")
-            }
-            val resultSetVendeur = MySQL.executeRequete(connection!!, "select * from vendeur")
-            var str:String = ""
-            while (resultSetVendeur!!.next()) {
-                str = resultSetVendeur.getString("civilite") + " "+ resultSetVendeur.getString("nom") + " "+ resultSetVendeur.getString("prenom") + " "+ resultSetVendeur.getString("raison_social")
-                addText!!.add(str)
-            }
-            var adapter: ArrayAdapter<String>  = ArrayAdapter(this, android.R.layout.simple_list_item_1, addText!!)
-            listeView.adapter = adapter
-            
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(p0: String?): Boolean {
-                    searchView.clearFocus()
-                    if(addText!!.contains(p0)) {
-                        adapter.filter.filter(p0)
-                    }
-                    else {
-                        Toast.makeText(applicationContext, "Article non trouvé", Toast.LENGTH_LONG).show()
-                    }
-                    return false
-                }
-                override fun onQueryTextChange(p0: String?): Boolean {
-                    adapter.filter.filter(p0)
-                    return false
-                }
-            })
-        }catch (e: java.lang.Exception) {
-            e.printStackTrace()
-        }
-        retour.setOnClickListener {
-            setContentView(R.layout.activity_main)
-            loadAccueil()
-        }
-    }
 
     fun getListOfArticles(query: String) : ArrayList<Article>?{
         MySQL.MySQL("user", "mdp")
@@ -122,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             if(resultSet.getString("categorie").equals("moteur")) {
                 image = R.drawable.moteur
             }
-            else if(resultSet.getString("categorie").equals("pneu")) {
+            else if(resultSet.getString("categorie").equals("pneus")) {
                 image = R.drawable.pneu
             }
             else {
@@ -149,15 +93,41 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun loadBoutique() {
+    fun loadBoutique(marque:String) {
+
         setContentView(R.layout.boutique)
+
         var recyclerView = findViewById<RecyclerView>(R.id.RecyclerViewBoutique) as RecyclerView
+        var retour = findViewById<TextView>(R.id.retour) as TextView
+        var toolbar: Toolbar = findViewById(R.id.boutique_toolbar) as Toolbar
+        var imageSearch = toolbar.findViewById<ImageView>(R.id.ImageView_Search) as ImageView
+        var editText = toolbar.findViewById<EditText>(R.id.toolbar_searchText) as EditText
+        var articleAdapter : ArticleAdapter
 
-        val items = getListOfArticles("select article.nom as article, article.description, article.prix, article.categorie, vendeur.nom, vendeur.prenom from article inner join ajouter on article.idArticle = ajouter.idArticle inner join vendeur on ajouter.idVendeur = vendeur.idVendeur")
 
+        setSupportActionBar(toolbar)
+        var query:String
+        if(marque.isNullOrEmpty()) {
+            query = "select distinct article.nom as article, article.description, article.prix, article.categorie, vendeur.nom, vendeur.prenom from article inner join ajouter on article.idArticle = ajouter.idArticle inner join vendeur on ajouter.idVendeur = vendeur.idVendeur inner join peut_convenir_avec on article.idArticle = peut_convenir_avec.idArticle inner join voiture on peut_convenir_avec.idVoiture = voiture.idVoiture"
+        }
+        else {
+            query = "select distinct article.nom as article, article.description, article.prix, article.categorie, vendeur.nom, vendeur.prenom, voiture.marque from article inner join ajouter on article.idArticle = ajouter.idArticle inner join vendeur on ajouter.idVendeur = vendeur.idVendeur inner join peut_convenir_avec on article.idArticle = peut_convenir_avec.idArticle inner join voiture on peut_convenir_avec.idVoiture = voiture.idVoiture where marque='" + marque + "'"        }
+
+        //recuperer la list des articles depuis la BD
+        val items = getListOfArticles(query)
+        articleAdapter = ArticleAdapter(items!!)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = ArticleAdapter(items!!)
+            adapter = articleAdapter
+        }
+
+        imageSearch.setOnClickListener {
+            val search = editText.text.toString()
+            articleAdapter.filter.filter(search)
+        }
+
+        retour.setOnClickListener {
+            loadAccueil()
         }
 
     }
