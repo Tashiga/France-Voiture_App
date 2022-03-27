@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import java.sql.*
 import java.util.ArrayList
 
@@ -11,19 +13,31 @@ import java.util.ArrayList
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadAccueil()
+        loadBoutique()
     }
 
     fun loadAccueil() {
         setContentView(R.layout.activity_main)
         var boutonArticle = findViewById<Button>(R.id.btn_article) as Button
         var boutonPageConnexion = findViewById<Button>(R.id.connexion) as Button
+        var citroen = findViewById<ImageView>(R.id.imageCitroen) as ImageView
+        var peugeot = findViewById<ImageView>(R.id.imagePeugeot) as ImageView
+        var renault = findViewById<ImageView>(R.id.imageRenault) as ImageView
         var erreur = findViewById<TextView>(R.id.error_text_id) as TextView
         boutonArticle.setOnClickListener {
-            loadArticle()
+            loadArticle("")
         }
         boutonPageConnexion.setOnClickListener {
             loadConnexion()
+        }
+        citroen.setOnClickListener {
+            loadArticle("citroen")
+        }
+        peugeot.setOnClickListener {
+            loadArticle("peugeot")
+        }
+        renault.setOnClickListener {
+            loadArticle("renault")
         }
     }
 
@@ -36,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun loadArticle(){
+    fun loadArticle(marque:String){
         setContentView(R.layout.display_articles)
         var searchView = findViewById<SearchView>(R.id.idSearchBar) as SearchView
         var listeView = findViewById<ListView>(R.id.list_item) as ListView
@@ -44,7 +58,20 @@ class MainActivity : AppCompatActivity() {
         try {
             MySQL.MySQL("user", "mdp")
             var connection:Connection? = MySQL.connectMySQL()
-            val resultSet = MySQL.executeRequete(connection!!, "select * from article")
+            val resultSet:ResultSet?
+            if(marque.equals("citroen")) {
+               resultSet = MySQL.executeRequete(connection!!, "select * from article natural join peut_convenir_avec natural join voiture where voiture.marque="+ marque)
+            }
+            else if(marque.equals("renault")) {
+                resultSet = MySQL.executeRequete(connection!!, "select * from article natural join peut_convenir_avec natural join voiture where voiture.marque="+ marque)
+            }
+            else if(marque.equals("peugeot")) {
+                resultSet = MySQL.executeRequete(connection!!, "select * from article natural join peut_convenir_avec natural join voiture where voiture.marque="+ marque)
+            }
+            else {
+                resultSet = MySQL.executeRequete(connection!!, "select * from article")
+            }
+
             val addText: ArrayList<String> = ArrayList()
             while (resultSet!!.next()) {
                 addText!!.add(resultSet.getString("nom") + " "+ resultSet.getString("categorie") + " "+ resultSet.getString("prix") + " euros")
@@ -81,6 +108,58 @@ class MainActivity : AppCompatActivity() {
             setContentView(R.layout.activity_main)
             loadAccueil()
         }
+    }
+
+    fun getListOfArticles(query: String) : ArrayList<Article>?{
+        MySQL.MySQL("user", "mdp")
+        var connection:Connection? = MySQL.connectMySQL()
+        val resultSet:ResultSet? = MySQL.executeRequete(connection!!, query)
+        var article: Article
+        val items = ArrayList<Article>()
+        while (resultSet!!.next()) {
+            var nomVendeur = resultSet.getString("nom")+" "+resultSet.getString("prenom")
+            var image: Int
+            if(resultSet.getString("categorie").equals("moteur")) {
+                image = R.drawable.moteur
+            }
+            else if(resultSet.getString("categorie").equals("pneu")) {
+                image = R.drawable.pneu
+            }
+            else {
+                image = R.drawable.autre
+            }
+            var description:String
+            if(resultSet.getString("description").isNullOrEmpty()) {
+                description = ""
+            }
+            else {
+                description = resultSet.getString("description")
+            }
+
+            article = Article( resultSet.getString("article"),
+                    description,
+                    image,
+                    resultSet.getString("prix"),
+                    nomVendeur,
+                    resultSet.getString("categorie")
+            )
+            items.add(article)
+        }
+        return items
+
+    }
+
+    fun loadBoutique() {
+        setContentView(R.layout.boutique)
+        var recyclerView = findViewById<RecyclerView>(R.id.RecyclerViewBoutique) as RecyclerView
+
+        val items = getListOfArticles("select article.nom as article, article.description, article.prix, article.categorie, vendeur.nom, vendeur.prenom from article inner join ajouter on article.idArticle = ajouter.idArticle inner join vendeur on ajouter.idVendeur = vendeur.idVendeur")
+
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = ArticleAdapter(items!!)
+        }
+
     }
 
 }
