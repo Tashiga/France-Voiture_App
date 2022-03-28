@@ -1,4 +1,4 @@
-package fr.tashiga.france_voiture_app
+package fr.tashiga.france_voiture_app.Model
 
 data class Article (
     var titre: String,

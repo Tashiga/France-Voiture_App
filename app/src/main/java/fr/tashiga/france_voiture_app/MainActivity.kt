@@ -9,6 +9,8 @@ import java.sql.*
 import java.util.ArrayList
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
+import fr.tashiga.france_voiture_app.Controler.Functions
+import fr.tashiga.france_voiture_app.Model.Article
 
 
 class MainActivity : AppCompatActivity() {
@@ -49,53 +51,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     fun loadConnexion() {
         setContentView(R.layout.connexion)
         var retour = findViewById<TextView>(R.id.textView_retour) as TextView
         retour.setOnClickListener {
             loadAccueil()
         }
-    }
-
-
-    fun getListOfArticles(query: String) : ArrayList<Article>?{
-        MySQL.MySQL("user", "mdp")
-        var connection:Connection? = MySQL.connectMySQL()
-        val resultSet:ResultSet? = MySQL.executeRequete(connection!!, query)
-        var article: Article
-        val items = ArrayList<Article>()
-        while (resultSet!!.next()) {
-            var nomVendeur = resultSet.getString("nom")+" "+resultSet.getString("prenom")
-            var image: Int
-            if(resultSet.getString("categorie").equals("moteur")) {
-                image = R.drawable.moteur
-            }
-            else if(resultSet.getString("categorie").equals("pneus")) {
-                image = R.drawable.pneu
-            }
-            else {
-                image = R.drawable.autre
-            }
-            var description:String
-            if(resultSet.getString("description").isNullOrEmpty()) {
-                description = ""
-            }
-            else {
-                description = resultSet.getString("description")
-            }
-
-            article = Article( resultSet.getString("article"),
-                    description,
-                    image,
-                    resultSet.getString("prix"),
-                    nomVendeur,
-                    resultSet.getString("categorie")
-            )
-            items.add(article)
-        }
-        return items
-
     }
 
     fun loadBoutique(marque:String) {
@@ -112,7 +73,6 @@ class MainActivity : AppCompatActivity() {
         var editText = toolbar.findViewById<EditText>(R.id.toolbar_searchText) as EditText
         var articleAdapter : ArticleAdapter
 
-
         setSupportActionBar(toolbar)
         var query:String
         if(marque.isNullOrEmpty()) {
@@ -122,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             query = "select distinct article.nom as article, article.description, article.prix, article.categorie, vendeur.nom, vendeur.prenom, voiture.marque from article inner join ajouter on article.idArticle = ajouter.idArticle inner join vendeur on ajouter.idVendeur = vendeur.idVendeur inner join peut_convenir_avec on article.idArticle = peut_convenir_avec.idArticle inner join voiture on peut_convenir_avec.idVoiture = voiture.idVoiture where marque='" + marque + "'"        }
 
         //recuperer la list des articles depuis la BD
-        val items = getListOfArticles(query)
+        val items = Functions.getListOfArticles(query)
         articleAdapter = ArticleAdapter(items!!)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -145,7 +105,6 @@ class MainActivity : AppCompatActivity() {
             loadMenu()
         }
 
-
     }
 
     fun loadMenu() {
@@ -165,7 +124,6 @@ class MainActivity : AppCompatActivity() {
         close.setOnClickListener {
             loadAccueil()
         }
-
         cardViewArtilces.setOnClickListener {
             loadBoutique("")
         }

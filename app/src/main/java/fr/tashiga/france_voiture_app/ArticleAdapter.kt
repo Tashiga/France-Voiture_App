@@ -1,6 +1,5 @@
 package fr.tashiga.france_voiture_app
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import fr.tashiga.france_voiture_app.Model.Article
 
 class ArticleAdapter (var items: List<Article>) : RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>(), Filterable {
 
