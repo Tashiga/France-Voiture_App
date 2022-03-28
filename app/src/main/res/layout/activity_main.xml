@@ -4,52 +4,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bleu"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/button_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/red"
-        android:text="Afficher les articles"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <include layout="@layout/toolbar_main" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="411dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <Button
+            android:id="@+id/btn_article"
+            android:layout_width="178dp"
+            android:layout_height="65dp"
+            android:layout_marginLeft="17dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@color/red"
+            android:text="Afficher les articles" />
+
+        <Button
+            android:id="@+id/connexion"
+            android:layout_width="178dp"
+            android:layout_height="65dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/red"
+            android:text="CONNEXION" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="373dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="116dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ScrollView
-        android:layout_width="388dp"
-        android:layout_height="550dp"
-        app:layout_constraintBottom_toTopOf="@+id/error_text_id"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_id">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/imageCitroen"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            app:srcCompat="@mipmap/logo_citroen" />
 
-            <TextView
-                android:id="@+id/text_view_id"
-                android:layout_width="match_parent"
-                android:layout_height="600dp"
-                android:text="Resultats"
-                android:textSize="18sp" />
-        </LinearLayout>
-    </ScrollView>
+        <ImageView
+            android:id="@+id/imagePeugeot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@mipmap/logo_peugeot" />
 
-    <TextView
-        android:id="@+id/error_text_id"
-        android:layout_width="394dp"
-        android:layout_height="65dp"
-        android:layout_marginBottom="4dp"
-        android:text="Pas d'erreur"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <ImageView
+            android:id="@+id/imageRenault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@mipmap/logo_renault" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

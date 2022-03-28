@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardBackgroundColor="@color/article"
+    app:cardCornerRadius="8dp"
+    android:padding="8dp"
+    android:layout_margin="4dp"
+    app:cardElevation="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView_Article"
+            android:layout_width="100dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/TextView_article_nom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/imageView_Article"
+            android:layout_marginTop="10dp"
+            tools:text="Titre de l'article"
+            android:textColor="@color/bleu"
+            android:textSize="20sp"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/TextView_prix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TextView_article_nom"
+            android:layout_toEndOf="@+id/imageView_Article"
+            android:text="Prix :"
+            android:textColor="@color/bleu"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/TextView_prixArticle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TextView_article_nom"
+            android:layout_marginStart="4dp"
+            android:layout_toEndOf="@+id/TextView_prix"
+            android:textColor="@color/bleu"
+            tools:text="xxx.xx euros" />
+
+        <TextView
+            android:id="@+id/TextView_categorie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TextView_prix"
+            android:layout_toEndOf="@+id/imageView_Article"
+            android:text="Categorie :"
+            android:textColor="@color/bleu"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TextView_nomCategorie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TextView_prix"
+            android:layout_marginStart="4dp"
+            android:layout_toEndOf="@+id/TextView_categorie"
+            android:textColor="@color/bleu"
+            tools:text="categorie de l'article" />
+
+        <TextView
+            android:id="@+id/TextView_vendeur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TextView_categorie"
+            android:layout_toEndOf="@+id/imageView_Article"
+            android:text="Vendeur :"
+            android:textColor="@color/bleu"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/TextView_nomVendeur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TextView_categorie"
+            android:layout_marginStart="4dp"
+            android:layout_toEndOf="@+id/TextView_vendeur"
+            android:textColor="@color/bleu"
+            tools:text="vendeur's name" />
+
+        <TextView
+            android:id="@+id/TextView_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:layout_toEndOf="@id/imageView_Article"
+            android:ellipsize="end"
+            android:maxLines="4"
+            android:textColor="@color/bleu"
+            android:textSize="12sp"
+            tools:text="texte de la description. texte de la description. texte de la description. texte de la description. texte de la description. texte de la description. texte de la description. texte de la description. texte de la description. texte de la description. texte de la description." />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description : "
+            android:layout_above="@+id/TextView_description"
+            android:layout_toEndOf="@id/imageView_Article"
+            android:textStyle="bold"
+            android:textColor="@color/bleu"
+            />
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

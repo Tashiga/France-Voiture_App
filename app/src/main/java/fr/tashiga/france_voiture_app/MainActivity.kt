@@ -1,41 +1,134 @@
 package fr.tashiga.france_voiture_app
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import java.sql.*
+import java.util.ArrayList
+import androidx.appcompat.widget.Toolbar
+import androidx.cardview.widget.CardView
+import fr.tashiga.france_voiture_app.Controler.Functions
+import fr.tashiga.france_voiture_app.Model.Article
 
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        var text = findViewById<TextView>(R.id.text_view_id) as TextView
-        var boutonArticle = findViewById<Button>(R.id.button_id) as Button
-        var erreur = findViewById<TextView>(R.id.error_text_id) as TextView
-        boutonArticle.setOnClickListener {
-            try {
-                MySQL.MySQL("user", "mdp")
-                var connection:Connection? = MySQL.connectMySQL()
-                var addText:String? = "\t" + "Articles : " + "\n\n"
-                val sql = "SELECT * FROM article"
-                val resultSet = MySQL.executeRequete(connection!!, sql)
-                while (resultSet!!.next()) {
-                    addText += resultSet.getString("idArticle") + " - " +
-                            resultSet.getString("nom") + " (" +resultSet.getString("categorie") + ") \n" +
-                            "Description : " + resultSet.getString("description") + "\n" +
-                            "Stock : " + resultSet.getString("nbStock") + "\n" +
-                            "Prix : " + resultSet.getString("prix") + " euros \n" +
-                            "Date de création : " +resultSet.getString("dateCreation")  + "\n\n"
-                }
-                text.text = addText
+        loadAccueil()
+    }
 
-            }catch (e:Exception) {
-                e.printStackTrace()
-                erreur.text = e.message
-            }
+    fun loadAccueil() {
+        setContentView(R.layout.activity_main)
+
+        var imageViewMenu = findViewById<ImageView>(R.id.imageView_menu) as ImageView
+
+        var boutonArticle = findViewById<Button>(R.id.btn_article) as Button
+        var boutonPageConnexion = findViewById<Button>(R.id.connexion) as Button
+        var citroen = findViewById<ImageView>(R.id.imageCitroen) as ImageView
+        var peugeot = findViewById<ImageView>(R.id.imagePeugeot) as ImageView
+        var renault = findViewById<ImageView>(R.id.imageRenault) as ImageView
+
+        boutonArticle.setOnClickListener {
+            loadBoutique("")
+        }
+        citroen.setOnClickListener {
+            loadBoutique("Citroen")
+        }
+        peugeot.setOnClickListener {
+            loadBoutique("Peugeot")
+        }
+        renault.setOnClickListener {
+            loadBoutique("Renault")
+        }
+        boutonPageConnexion.setOnClickListener {
+            loadConnexion()
+        }
+        imageViewMenu.setOnClickListener{
+            loadMenu()
+        }
+
+    }
+
+    fun loadConnexion() {
+        setContentView(R.layout.connexion)
+        var retour = findViewById<TextView>(R.id.textView_retour) as TextView
+        retour.setOnClickListener {
+            loadAccueil()
+        }
+    }
+
+    fun loadBoutique(marque:String) {
+
+        setContentView(R.layout.boutique)
+
+        var imageViewMenu = findViewById<ImageView>(R.id.imageView_menu) as ImageView
+        var franceVoiture = findViewById<TextView>(R.id.franceVoiture) as TextView
+
+        var recyclerView = findViewById<RecyclerView>(R.id.RecyclerViewBoutique) as RecyclerView
+        var retour = findViewById<TextView>(R.id.retour) as TextView
+        var toolbar: Toolbar = findViewById(R.id.boutique_toolbar) as Toolbar
+        var imageSearch = toolbar.findViewById<ImageView>(R.id.ImageView_Search) as ImageView
+        var editText = toolbar.findViewById<EditText>(R.id.toolbar_searchText) as EditText
+        var articleAdapter : ArticleAdapter
+
+        setSupportActionBar(toolbar)
+        var query:String
+        if(marque.isNullOrEmpty()) {
+            query = "select distinct article.nom as article, article.description, article.prix, article.categorie, vendeur.nom, vendeur.prenom from article inner join ajouter on article.idArticle = ajouter.idArticle inner join vendeur on ajouter.idVendeur = vendeur.idVendeur inner join peut_convenir_avec on article.idArticle = peut_convenir_avec.idArticle inner join voiture on peut_convenir_avec.idVoiture = voiture.idVoiture"
+        }
+        else {
+            query = "select distinct article.nom as article, article.description, article.prix, article.categorie, vendeur.nom, vendeur.prenom, voiture.marque from article inner join ajouter on article.idArticle = ajouter.idArticle inner join vendeur on ajouter.idVendeur = vendeur.idVendeur inner join peut_convenir_avec on article.idArticle = peut_convenir_avec.idArticle inner join voiture on peut_convenir_avec.idVoiture = voiture.idVoiture where marque='" + marque + "'"        }
+
+        //recuperer la list des articles depuis la BD
+        val items = Functions.getListOfArticles(query)
+        articleAdapter = ArticleAdapter(items!!)
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = articleAdapter
+        }
+
+        imageSearch.setOnClickListener {
+            val search = editText.text.toString()
+            articleAdapter.filter.filter(search)
+        }
+
+        retour.setOnClickListener {
+            loadAccueil()
+        }
+
+        franceVoiture.setOnClickListener {
+            loadAccueil()
+        }
+        imageViewMenu.setOnClickListener{
+            loadMenu()
+        }
+
+    }
+
+    fun loadMenu() {
+        setContentView(R.layout.menu_page)
+//        var include = findViewById(R.id.include) as View
+        var toolbar: Toolbar = findViewById(R.id.include) as Toolbar
+        var close = toolbar.findViewById<ImageView>(R.id.ImageView_close) as ImageView
+
+        var cardViewProfil : CardView = findViewById(R.id.cardView_profil) as CardView
+        var cardViewDiscussion : CardView = findViewById(R.id.cardView_discussion) as CardView
+        var cardViewArtilces : CardView = findViewById(R.id.cardView_articles) as CardView
+        var cardViewContacter : CardView = findViewById(R.id.cardView_contacter) as CardView
+        var cardViewAPropos : CardView = findViewById(R.id.cardView_aPorpos) as CardView
+        var cardViewAide : CardView = findViewById(R.id.cardView_aide) as CardView
+        var cardViewConnexion : CardView = findViewById(R.id.cardView_connexion) as CardView
+
+        close.setOnClickListener {
+            loadAccueil()
+        }
+        cardViewArtilces.setOnClickListener {
+            loadBoutique("")
+        }
+        cardViewConnexion.setOnClickListener {
+            loadConnexion()
         }
     }
 

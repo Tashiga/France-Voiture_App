@@ -9,5 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#DC3030</color>
     <color name="bleu">#1E2754</color>
-    <color name="text_color">#FFFFFFFF</color>
+    <color name="article">#d4d2cf</color>
+    <color name="light_bleu">#263066</color>
+    <color name="light_red">#e64040</color>
+
 </resources>
