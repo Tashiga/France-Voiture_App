@@ -1,7 +1,6 @@
 package fr.tashiga.france_voiture_app
 
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import java.sql.*
 import java.util.ArrayList
 import androidx.appcompat.widget.Toolbar
-
+import androidx.cardview.widget.CardView
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +19,9 @@ class MainActivity : AppCompatActivity() {
 
     fun loadAccueil() {
         setContentView(R.layout.activity_main)
+
+        var imageViewMenu = findViewById<ImageView>(R.id.imageView_menu) as ImageView
+
         var boutonArticle = findViewById<Button>(R.id.btn_article) as Button
         var boutonPageConnexion = findViewById<Button>(R.id.connexion) as Button
         var citroen = findViewById<ImageView>(R.id.imageCitroen) as ImageView
@@ -40,6 +42,9 @@ class MainActivity : AppCompatActivity() {
         }
         boutonPageConnexion.setOnClickListener {
             loadConnexion()
+        }
+        imageViewMenu.setOnClickListener{
+            loadMenu()
         }
 
     }
@@ -97,6 +102,9 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.boutique)
 
+        var imageViewMenu = findViewById<ImageView>(R.id.imageView_menu) as ImageView
+        var franceVoiture = findViewById<TextView>(R.id.franceVoiture) as TextView
+
         var recyclerView = findViewById<RecyclerView>(R.id.RecyclerViewBoutique) as RecyclerView
         var retour = findViewById<TextView>(R.id.retour) as TextView
         var toolbar: Toolbar = findViewById(R.id.boutique_toolbar) as Toolbar
@@ -130,6 +138,40 @@ class MainActivity : AppCompatActivity() {
             loadAccueil()
         }
 
+        franceVoiture.setOnClickListener {
+            loadAccueil()
+        }
+        imageViewMenu.setOnClickListener{
+            loadMenu()
+        }
+
+
+    }
+
+    fun loadMenu() {
+        setContentView(R.layout.menu_page)
+//        var include = findViewById(R.id.include) as View
+        var toolbar: Toolbar = findViewById(R.id.include) as Toolbar
+        var close = toolbar.findViewById<ImageView>(R.id.ImageView_close) as ImageView
+
+        var cardViewProfil : CardView = findViewById(R.id.cardView_profil) as CardView
+        var cardViewDiscussion : CardView = findViewById(R.id.cardView_discussion) as CardView
+        var cardViewArtilces : CardView = findViewById(R.id.cardView_articles) as CardView
+        var cardViewContacter : CardView = findViewById(R.id.cardView_contacter) as CardView
+        var cardViewAPropos : CardView = findViewById(R.id.cardView_aPorpos) as CardView
+        var cardViewAide : CardView = findViewById(R.id.cardView_aide) as CardView
+        var cardViewConnexion : CardView = findViewById(R.id.cardView_connexion) as CardView
+
+        close.setOnClickListener {
+            loadAccueil()
+        }
+
+        cardViewArtilces.setOnClickListener {
+            loadBoutique("")
+        }
+        cardViewConnexion.setOnClickListener {
+            loadConnexion()
+        }
     }
 
 }

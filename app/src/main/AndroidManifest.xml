@@ -12,16 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Francevoiture_App">
         <activity
+            android:name=".MenuActivity"
+            android:exported="false"
+            android:label="@string/title_activity_menu"
+            android:theme="@style/Theme.Francevoiture_App.NoActionBar" />
+        <activity
             android:name=".SplachScreenActivity"
             android:exported="true"
             android:theme="@style/noActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".MainActivity"
